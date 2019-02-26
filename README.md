@@ -1,3 +1,7 @@
+# OS
+
+Practicing in asm and c by writing own simple OS
+
 ```
 gcc -ffreestanding -c kernel.c -o kernel.o
 ld -o kernel.bin -Ttext 0x1000 kernel.o --oformat binary
