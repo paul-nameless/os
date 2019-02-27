@@ -16,11 +16,11 @@
 
     jmp $
 
-    %include      "print.asm"
-    %include      "gdt.asm"
-    %include      "print_pm.asm"
-    %include      "switch_to_pm.asm"
-    %include      "disk_load.asm"
+    %include      "boot/print.asm"
+    %include      "boot/gdt.asm"
+    %include      "boot/print_pm.asm"
+    %include      "boot/switch_to_pm.asm"
+    %include      "boot/disk_load.asm"
 
     [bits 16]
 load_kernel:

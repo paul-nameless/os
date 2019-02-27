@@ -1,31 +1,41 @@
-all: os.bin
+ # Automatically expand to a list of existing files that
+# match the patterns
+C_SOURCES=$(wildcard kernel/*.c drivers/*.c )
+# Create a list of object files to build , simple by replacing
+# the ’.c ’ extension of filenames in C_SOURCES with ’.o ’
+OBJ=${C_SOURCES:.c=.o}
+
+all: build/os.bin
 
 run: all
-	qemu-system-x86_64 os.bin
+	qemu-system-x86_64 build/os.bin
 
-os.bin: boot.bin kernel.bin
-	cat $^ > os.bin
+build/os.bin: build/boot.bin build/kernel.bin
+	cat $^ > $@
 
+# Link kernel object files into one binary , making sure the
+# entry code is right at the start of the binary .
 # $ ^ is substituted with all of the target ’ s dependancy files
-kernel.bin: kernel_entry.o kernel.o
-	ld -m elf_i386 -o kernel.bin -Ttext 0x1000 $^ --oformat binary
+build/kernel.bin: kernel/kernel_entry.o ${OBJ}
+	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
-# $ < is the first dependancy and $@ is the target file
-kernel.o: kernel.c
+# Generic rule for building ’ somefile .o ’ from ’ somefile .c ’
+%.o: %.c
 	gcc -fno-pie -m32 -ffreestanding -c $< -o $@
 
 # Build the kernel entry object file .
 # Same as the above rule .
-kernel_entry.o: kernel_entry.asm
+kernel/kernel_entry.o: kernel/kernel_entry.asm
 	nasm $< -f elf32 -o $@
 
-boot.bin: boot.asm
+build/boot.bin: boot/boot.asm
 	nasm $< -f bin -o $@
 
-kernel.dis: kernel.bin
+kernel.dis: build/kernel.bin
 	ndisasm -b 32 $< > $@
 
 clean:
-	rm *.bin *.o
+	rm -fr *.bin *.dis *.o
+	rm -fr kernel/*.o build/*.o drivers/*.o build/*.bin
 
-build: os.bin
+build: build/os.bin
