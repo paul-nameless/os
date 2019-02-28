@@ -7,7 +7,7 @@ OBJ=${C_SOURCES:.c=.o}
 
 all: build/os.bin
 
-run: all
+run:
 	qemu-system-x86_64 build/os.bin
 
 build/os.bin: build/boot.bin build/kernel.bin
@@ -38,4 +38,4 @@ clean:
 	rm -fr *.bin *.dis *.o
 	rm -fr kernel/*.o build/*.o drivers/*.o build/*.bin
 
-build: build/os.bin
+build: clean build/os.bin
