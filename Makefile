@@ -4,6 +4,8 @@ C_SOURCES=$(wildcard kernel/*.c drivers/*.c include/*.c)
 # Create a list of object files to build , simple by replacing
 # the ’.c ’ extension of filenames in C_SOURCES with ’.o ’
 OBJ=${C_SOURCES:.c=.o}
+CFLAGS = -fno-pie -m32 -ffreestanding -nostdlib -nostdinc -fno-builtin \
+	-fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror
 
 all: build/os.bin
 
@@ -21,7 +23,7 @@ build/kernel.bin: kernel/kernel_entry.o ${OBJ}
 
 # Generic rule for building ’ somefile .o ’ from ’ somefile .c ’
 %.o: %.c
-	gcc -fno-pie -m32 -ffreestanding -c $< -o $@
+	gcc $(CFLAGS) -c $< -o $@
 
 # Build the kernel entry object file .
 # Same as the above rule .

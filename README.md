@@ -2,6 +2,8 @@
 
 Practicing in asm and c by writing own simple OS
 
+* Write dockerfile
+
 ```
 # build
 make [build]
