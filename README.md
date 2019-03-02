@@ -5,6 +5,7 @@ Practicing in asm and c by writing own simple OS
 
 ## TODO
 
+* read n blocks: bash -c '$((($(ls -al build/os.bin | cut -d \' \' -f 8) - 512) / 512))'
 * Write dockerfile
 * make availability to run in bochs
 

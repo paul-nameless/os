@@ -36,3 +36,7 @@ int print_hex(int number) {
   print(buf);
   return HEX_BUF_LEN - 1;
 }
+
+int print_int(int number) {
+  return number + 1;
+}
