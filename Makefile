@@ -6,11 +6,24 @@ C_SOURCES=$(wildcard kernel/*.c drivers/*.c include/*.c)
 OBJ=${C_SOURCES:.c=.o}
 CFLAGS = -fno-pie -m32 -ffreestanding -nostdlib -nostdinc -fno-builtin \
 	-fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror
+CC=i386-elf-gcc
+LD=i386-elf-ld
 
 all: build/os.bin
 
 run:
-	qemu-system-x86_64 build/os.bin
+	qemu-system-x86_64 -fda build/os.bin
+
+build: clean build/os.bin
+
+start: build run
+
+clean:
+	rm -fr *.bin *.dis *.o
+	rm -fr kernel/*.o include/*.o drivers/*.o build/*.o build/*.bin
+
+kernel.dis: build/kernel.bin
+	ndisasm -b 32 $< > $@
 
 build/os.bin: build/boot.bin build/kernel.bin
 	cat $^ > $@
@@ -19,11 +32,11 @@ build/os.bin: build/boot.bin build/kernel.bin
 # entry code is right at the start of the binary .
 # $ ^ is substituted with all of the target ’ s dependancy files
 build/kernel.bin: kernel/kernel_entry.o ${OBJ}
-	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
+	$(LD) -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # Generic rule for building ’ somefile .o ’ from ’ somefile .c ’
 %.o: %.c
-	gcc $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Build the kernel entry object file .
 # Same as the above rule .
@@ -32,12 +45,3 @@ kernel/kernel_entry.o: kernel/kernel_entry.asm
 
 build/boot.bin: boot/boot.asm
 	nasm $< -f bin -o $@
-
-kernel.dis: build/kernel.bin
-	ndisasm -b 32 $< > $@
-
-clean:
-	rm -fr *.bin *.dis *.o
-	rm -fr kernel/*.o include/*.o drivers/*.o build/*.o build/*.bin
-
-build: clean build/os.bin
