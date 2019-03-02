@@ -19,6 +19,14 @@ Practicing in asm and c by writing own simple OS
   * Multi-processing
 
 
+## Install
+
+#### MacOS
+
+```
+brew install i386-elf-gcc qemu
+```
+
 ## Build and run
 
 ```
