@@ -1,9 +1,11 @@
  # Automatically expand to a list of existing files that
 # match the patterns
-C_SOURCES=$(wildcard kernel/*.c drivers/*.c include/*.c)
+C_SOURCES=$(wildcard kernel/*.c drivers/*.c include/*.c cpu/*.c)
+HEADERS = $(wildcard kernel/*.h drivers/*.h cpu/*.h)
+
 # Create a list of object files to build , simple by replacing
 # the ’.c ’ extension of filenames in C_SOURCES with ’.o ’
-OBJ=${C_SOURCES:.c=.o}
+OBJ=${C_SOURCES:.c=.o cpu/interrupt.o}
 CFLAGS = -fno-pie -m32 -ffreestanding -nostdlib -nostdinc -fno-builtin \
 	-fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror
 CC=i386-elf-gcc
@@ -35,13 +37,19 @@ build/kernel.bin: kernel/kernel_entry.o ${OBJ}
 	$(LD) -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # Generic rule for building ’ somefile .o ’ from ’ somefile .c ’
-%.o: %.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Build the kernel entry object file .
-# Same as the above rule .
-kernel/kernel_entry.o: kernel/kernel_entry.asm
-	nasm $< -f elf32 -o $@
+%.o: %.asm
+	nasm $< -f elf -o $@
 
+%.bin: %.asm
+	nasm $< -f bin -o $@
+
+# # Build the kernel entry object file .
+# # Same as the above rule .
+# kernel/kernel_entry.o: kernel/kernel_entry.asm
+#	nasm $< -f elf32 -o $@
+#
 build/boot.bin: boot/boot.asm
 	nasm $< -f bin -o $@
