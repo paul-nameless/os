@@ -2,6 +2,8 @@
 #include "idt.h"
 #include "../libc/stdio.h"
 #include "../kernel/low_level.h"
+#include "../drivers/keyboard.h"
+#include "../cpu/timer.h"
 
 isr_t interrupt_handlers[IDT_ENTRIES];
 
@@ -142,4 +144,23 @@ void irq_handler(registers_t r) {
     isr_t handler = interrupt_handlers[r.int_no];
     handler(r);
   }
+}
+
+void irq_install() {
+  /* asm volatile("sti"); */
+  /* init_timer(50); */
+
+  // sti shoud be called for irq
+  /* asm volatile("sti"); */
+  /* init_keyboard(); */
+
+  /* Enable interruptions */
+  asm volatile("sti");
+  /* IRQ0: timer */
+
+  // disable for now
+  /* init_timer(50); */
+
+  /* IRQ1: keyboard */
+  init_keyboard();
 }

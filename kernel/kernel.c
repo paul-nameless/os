@@ -1,7 +1,6 @@
 #include "../libc/stdio.h"
-#include "../drivers/keyboard.h"
+#include "../libc/stdlib.h"
 #include "../cpu/isr.h"
-#include "../cpu/timer.h"
 
 void main () {
   clear_screen();
@@ -10,14 +9,10 @@ void main () {
   print("\n");
 
   isr_install();
+  irq_install();
+
   /* Test the interrupts */
   __asm__ __volatile__("int $2");
   __asm__ __volatile__("int $3");
 
-  /* asm volatile("sti"); */
-  /* init_timer(50); */
-
-  // sti shoud be called for irq
-  asm volatile("sti");
-  init_keyboard();
 }
