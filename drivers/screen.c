@@ -1,6 +1,6 @@
 #include "screen.h"
 #include "../kernel/low_level.h"
-#include "../kernel/util.h"
+#include "../libc/mem.h"
 
 int get_screen_offset(int col, int row) {
   return (row * MAX_COLS + col) * 2;
