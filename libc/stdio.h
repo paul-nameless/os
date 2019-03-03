@@ -1,6 +1,8 @@
 #ifndef STDIO_H
 #define STDIO_H
 
+void print_backspace();
+
 void clear_screen();
 void print(char* format);
 

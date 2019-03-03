@@ -2,6 +2,22 @@
 #include "../cpu/ports.h"
 #include "../libc/mem.h"
 
+
+int get_offset_row(int offset) {
+  return offset / (2 * MAX_COLS);
+}
+
+int get_offset_col(int offset) {
+  return (offset - (get_offset_row(offset)*2*MAX_COLS))/2;
+}
+
+void delete_last() {
+    int offset = get_cursor()-2;
+    int row = get_offset_row(offset);
+    int col = get_offset_col(offset);
+    print_char(0x08, col, row, WHITE_ON_BLACK);
+}
+
 int get_screen_offset(int col, int row) {
   return (row * MAX_COLS + col) * 2;
 }
@@ -68,13 +84,13 @@ void print_at(char* message, int col, int row) {
 }
 
 
-void print_char(char character, int col, int row, char attribute_byte) {
+void print_char(char character, int col, int row, char attr) {
   /* Create a byte ( char ) pointer to the start of video memory */
   unsigned char* vidmem = (unsigned char*) VIDEO_ADDRESS;
 
   /* If attribute byte is zero , assume the default style . */
-  if (!attribute_byte) {
-    attribute_byte = WHITE_ON_BLACK;
+  if (!attr) {
+    attr = WHITE_ON_BLACK;
   }
 
   /* Get the video memory offset for the screen location */
@@ -92,16 +108,23 @@ void print_char(char character, int col, int row, char attribute_byte) {
   if (character == '\n') {
     int rows = offset / (2 * MAX_COLS);
     offset = get_screen_offset(79, rows);
+    // Update the offset to the next character cell , which is
+    // two bytes ahead of the current cell .
+    offset += 2;
     // Otherwise , write the character and its attribute byte to
     // video memory at our calculated offset .
+  } else if (character == 0x08) { // Backspace
+    vidmem[offset] = ' ';
+    vidmem[offset + 1] = attr;
+
   } else {
     vidmem[offset] = character;
-    vidmem[offset + 1] = attribute_byte;
+    vidmem[offset + 1] = attr;
+    // Update the offset to the next character cell , which is
+    // two bytes ahead of the current cell .
+    offset += 2;
   }
 
-  // Update the offset to the next character cell , which is
-  // two bytes ahead of the current cell .
-  offset += 2;
   // Make scrolling adjustment , for when we reach the bottom
   // of the screen .
   offset = handle_scrolling(offset);

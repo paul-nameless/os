@@ -17,4 +17,6 @@ int get_screen_offset(int col, int row);
 void set_cursor(int offset);
 int get_cursor();
 
+void delete_last();
+
 #endif

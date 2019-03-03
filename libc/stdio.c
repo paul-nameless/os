@@ -1,5 +1,9 @@
 #include "../drivers/screen.h"
 
+void print_backspace() {
+  delete_last();
+}
+
 void clear_screen() {
   int row = 0;
   int col = 0;
