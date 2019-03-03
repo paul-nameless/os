@@ -9,10 +9,10 @@
 #define REG_SCREEN_CTRL 0x3d4
 #define REG_SCREEN_DATA 0x3d5
 
-void print(char* message);
 void print_at(char* message, int col, int row);
 void print_char(char character, int col, int row, char attribute_byte);
-void clear_screen();
+
+int get_screen_offset(int col, int row);
 
 void set_cursor(int offset);
 int get_cursor();

@@ -1,5 +1,4 @@
-#include "../include/stdio.h"
-#include "../drivers/screen.h"
+#include "../libc/stdio.h"
 #include "../drivers/keyboard.h"
 #include "../cpu/isr.h"
 #include "../cpu/timer.h"

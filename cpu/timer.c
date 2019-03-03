@@ -1,7 +1,7 @@
 #include "timer.h"
 #include "isr.h"
 #include "types.h"
-#include "../include/stdio.h"
+#include "../libc/stdio.h"
 #include "../kernel/low_level.h"
 
 u32 tick = 0;

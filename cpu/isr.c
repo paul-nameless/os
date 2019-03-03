@@ -1,6 +1,6 @@
 #include "isr.h"
 #include "idt.h"
-#include "../include/stdio.h"
+#include "../libc/stdio.h"
 #include "../kernel/low_level.h"
 
 isr_t interrupt_handlers[IDT_ENTRIES];

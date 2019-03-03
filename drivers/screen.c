@@ -33,8 +33,6 @@ void set_cursor(int offset) {
   /* port_byte_out(REG_SCREEN_DATA, (unsigned char)0); */
 }
 
-
-
 int handle_scrolling(int cursor_offset) {
   if (cursor_offset < MAX_ROWS*MAX_COLS*2) {
     return cursor_offset;
@@ -55,20 +53,6 @@ int handle_scrolling(int cursor_offset) {
   return cursor_offset;
 }
 
-
-void clear_screen() {
-  int row = 0;
-  int col = 0;
-  /* Loop through video memory and write blank characters. */
-  for (row=0; row<MAX_ROWS; row++) {
-    for (col=0; col<MAX_COLS; col++) {
-      print_char(' ', col, row, WHITE_ON_BLACK);
-    }
-  }
-  // Move the cursor back to the top left.
-  set_cursor(get_screen_offset(0, 0));
-}
-
 void print_at(char* message, int col, int row) {
   // Update the cursor if col and row not negative.
   if (col >= 0 && row >= 0) {
@@ -83,9 +67,6 @@ void print_at(char* message, int col, int row) {
   }
 }
 
-void print(char* message) {
-  print_at(message , -1, -1);
-}
 
 void print_char(char character, int col, int row, char attribute_byte) {
   /* Create a byte ( char ) pointer to the start of video memory */

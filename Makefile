@@ -1,6 +1,6 @@
  # Automatically expand to a list of existing files that
 # match the patterns
-C_SOURCES=$(wildcard kernel/*.c drivers/*.c include/*.c cpu/*.c)
+C_SOURCES=$(wildcard kernel/*.c drivers/*.c libc/*.c cpu/*.c)
 HEADERS = $(wildcard kernel/*.h drivers/*.h cpu/*.h)
 
 # Create a list of object files to build , simple by replacing
@@ -22,7 +22,7 @@ start: build run
 
 clean:
 	rm -fr *.bin *.dis *.o
-	rm -fr kernel/*.o include/*.o drivers/*.o build/*.o build/*.bin
+	rm -fr kernel/*.o libc/*.o drivers/*.o build/*.o build/*.bin
 
 kernel.dis: build/kernel.bin
 	ndisasm -b 32 $< > $@
