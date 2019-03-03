@@ -116,11 +116,11 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
-  printf("received interrupt: ");
+  print("received interrupt: ");
   print_hex(r.int_no);
-  printf(" | ");
-  printf(exception_messages[r.int_no]);
-  printf("\n");
+  print(" | ");
+  print(exception_messages[r.int_no]);
+  print("\n");
 }
 
 void register_interrupt_handler(u8 n, isr_t handler) {

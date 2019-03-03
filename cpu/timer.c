@@ -9,11 +9,11 @@ u32 tick = 0;
 
 static void timer_callback(registers_t r) {
   tick += 1;
-  printf("Tick: ");
+  print("Tick: ");
   print_hex(tick);
-  printf(" | ");
+  print(" | ");
   print_hex(r.int_no);
-  printf("\n");
+  print("\n");
 }
 
 void init_timer(u32 freq) {
