@@ -4,6 +4,7 @@
 #include "../cpu/types.h"
 #include "../libc/stdio.h"
 #include "../libc/string.h"
+#include "../libc/mem.h"
 
 #define UNUSED(x) (void)(x)
 
@@ -29,7 +30,17 @@ void user_input(char *input) {
     if (strcmp(input, "HALT") == 0) {
         print("Stopping the CPU. Bye!\n");
         __asm__ __volatile__("hlt");
+    } else if (strcmp(input, "PAGE") == 0) {
+      /* Lesson 22: Code to test kmalloc, the rest is unchanged */
+      u32 phys_addr;
+      u32 page = kmalloc(1000, 1, &phys_addr);
+      print("Page: ");
+      print_hex(page);
+      print(", physical address: ");
+      print_hex(phys_addr);
+      print("\n");
     }
+
     print("You said: ");
     print(input);
     print("\n> ");
