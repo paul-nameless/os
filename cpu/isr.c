@@ -1,9 +1,9 @@
 #include "isr.h"
 #include "idt.h"
 #include "../libc/stdio.h"
-#include "../kernel/low_level.h"
+#include "../cpu/ports.h"
 #include "../drivers/keyboard.h"
-#include "../cpu/timer.h"
+#include "../drivers/timer.h"
 
 isr_t interrupt_handlers[IDT_ENTRIES];
 
@@ -158,7 +158,6 @@ void irq_install() {
   asm volatile("sti");
   /* IRQ0: timer */
 
-  // disable for now
   /* init_timer(50); */
 
   /* IRQ1: keyboard */

@@ -1,5 +1,5 @@
 #include "screen.h"
-#include "../kernel/low_level.h"
+#include "../cpu/ports.h"
 #include "../libc/mem.h"
 
 int get_screen_offset(int col, int row) {

@@ -22,7 +22,7 @@ start: build run
 
 clean:
 	rm -fr *.bin *.dis *.o
-	rm -fr kernel/*.o libc/*.o drivers/*.o build/*.o build/*.bin
+	rm -fr kernel/*.o libc/*.o cpu/*.odrivers/*.o build/*.o build/*.bin
 
 kernel.dis: build/kernel.bin
 	ndisasm -b 32 $< > $@

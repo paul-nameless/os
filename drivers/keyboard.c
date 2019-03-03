@@ -1,8 +1,8 @@
 #include "keyboard.h"
-#include "../kernel/low_level.h"
+#include "../cpu/ports.h"
 #include "../cpu/isr.h"
-#include "../libc/stdio.h"
 #include "../cpu/types.h"
+#include "../libc/stdio.h"
 
 void print_letter(u8 scancode);
 
